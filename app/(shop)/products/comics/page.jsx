@@ -13,15 +13,67 @@ const { Title, Text } = Typography;
 const { Search } = Input;
 const { Option } = Select;
 
+import { unstableSetRender } from 'antd';
+import { createRoot } from 'react-dom/client';
+
+unstableSetRender((node, container) => {
+  container._reactRoot ||= createRoot(container);
+  const root = container._reactRoot;
+  root.render(node);
+  return async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    root.unmount();
+  };
+});
+
 // Datos de ejemplo - en un caso real vendrían de una API
-const MOCK_VIDEOGAMES = [
+const MOCK_COMICS = [
   {
     id: 1,
-    title: "The Legend of Zelda: Breath of the Wild",
-    price: 59.99,
-    discountPrice: 49.99,
-    platforms: ["Switch"],
-    categories: ["Aventura", "Acción"],
+    title: "Batman: The Killing Joke",
+    price: 17.99,
+    discountPrice: 14.99,
+    platforms: ["DC Comics"],
+    categories: ["Superheroes", "Drama", "Crimen"],
+    rating: 4.9,
+    stock: 12,
+    image: "/api/placeholder/300/400",
+    isNew: false,
+    isBestseller: true
+  },
+  {
+    id: 2,
+    title: "Watchmen",
+    price: 24.99,
+    discountPrice: null,
+    platforms: ["DC Comics"],
+    categories: ["Superheroes", "Drama", "Misterio"],
+    rating: 4.8,
+    stock: 8,
+    image: "/api/placeholder/300/400",
+    isNew: false,
+    isBestseller: true
+  },
+  {
+    id: 3,
+    title: "The Amazing Spider-Man #1",
+    price: 29.99,
+    discountPrice: 25.99,
+    platforms: ["Marvel"],
+    categories: ["Superheroes", "Action", "Adventure"],
+    rating: 4.7,
+    stock: 5,
+    image: "/api/placeholder/300/400",
+    isNew: true,
+    isBestseller: false
+  },
+  {
+    id: 4,
+    title: "Saga Vol. 1",
+    price: 14.99,
+    discountPrice: null,
+    platforms: ["Image Comics"],
+    categories: ["Sci-Fi", "Fantasy", "Drama"],
     rating: 4.9,
     stock: 15,
     image: "/api/placeholder/300/400",
@@ -29,120 +81,81 @@ const MOCK_VIDEOGAMES = [
     isBestseller: true
   },
   {
-    id: 2,
-    title: "Elden Ring",
-    price: 69.99,
-    discountPrice: null,
-    platforms: ["PS5", "Xbox Series X", "PC"],
-    categories: ["RPG", "Acción"],
-    rating: 4.8,
-    stock: 8,
-    image: "/api/placeholder/300/400",
-    isNew: true,
-    isBestseller: true
-  },
-  {
-    id: 3,
-    title: "Cyberpunk 2077",
-    price: 59.99,
-    discountPrice: 29.99,
-    platforms: ["PS5", "Xbox Series X", "PC"],
-    categories: ["RPG", "Acción", "Mundo Abierto"],
-    rating: 4.1,
-    stock: 20,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: false
-  },
-  {
-    id: 4,
-    title: "Super Mario Odyssey",
-    price: 49.99,
-    discountPrice: null,
-    platforms: ["Switch"],
-    categories: ["Plataformas", "Aventura"],
-    rating: 4.7,
-    stock: 12,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
-  },
-  {
     id: 5,
-    title: "Red Dead Redemption 2",
-    price: 59.99,
-    discountPrice: 39.99,
-    platforms: ["PS4", "Xbox One", "PC"],
-    categories: ["Acción", "Aventura", "Mundo Abierto"],
-    rating: 4.9,
-    stock: 7,
+    title: "Sandman Vol. 1: Preludes & Nocturnes",
+    price: 19.99,
+    discountPrice: 16.99,
+    platforms: ["DC Comics", "Vertigo"],
+    categories: ["Fantasy", "Horror", "Mitología"],
+    rating: 4.8,
+    stock: 10,
     image: "/api/placeholder/300/400",
     isNew: false,
     isBestseller: true
   },
   {
     id: 6,
-    title: "Hogwarts Legacy",
-    price: 69.99,
-    discountPrice: 59.99,
-    platforms: ["PS5", "Xbox Series X", "PC"],
-    categories: ["RPG", "Aventura", "Mundo Abierto"],
-    rating: 4.5,
-    stock: 10,
+    title: "Maus",
+    price: 18.99,
+    discountPrice: null,
+    platforms: ["Pantheon Books"],
+    categories: ["Histórico", "Biografía", "Guerra"],
+    rating: 4.9,
+    stock: 7,
+    image: "/api/placeholder/300/400",
+    isNew: false,
+    isBestseller: false
+  },
+  {
+    id: 7,
+    title: "X-Men: Dark Phoenix Saga",
+    price: 21.99,
+    discountPrice: 17.99,
+    platforms: ["Marvel"],
+    categories: ["Superhéroes", "Ciencia Ficción", "Drama"],
+    rating: 4.7,
+    stock: 9,
     image: "/api/placeholder/300/400",
     isNew: true,
     isBestseller: false
   },
   {
-    id: 7,
-    title: "FIFA 24",
-    price: 69.99,
-    discountPrice: null,
-    platforms: ["PS5", "Xbox Series X", "PC", "Switch"],
-    categories: ["Deportes", "Simulación"],
-    rating: 4.3,
-    stock: 25,
-    image: "/api/placeholder/300/400",
-    isNew: true,
-    isBestseller: true
-  },
-  {
     id: 8,
-    title: "Minecraft",
-    price: 29.99,
+    title: "Sin City",
+    price: 19.99,
     discountPrice: null,
-    platforms: ["PC", "Switch", "PS4", "Xbox One", "Mobile"],
-    categories: ["Sandbox", "Aventura"],
-    rating: 4.8,
-    stock: 50,
+    platforms: ["Dark Horse"],
+    categories: ["Noir", "Crimen", "Thriller"],
+    rating: 4.6,
+    stock: 6,
     image: "/api/placeholder/300/400",
     isNew: false,
-    isBestseller: true
+    isBestseller: false
   },
   {
     id: 9,
-    title: "League of legends",
-    price: 29.99,
-    discountPrice: null,
-    platforms: ["PC", "Switch", "PS4", "Xbox One", "Mobile"],
-    categories: ["Sandbox", "Aventura"],
+    title: "Invincible Vol. 1",
+    price: 16.99,
+    discountPrice: 14.99,
+    platforms: ["Image Comics"],
+    categories: ["Superhéroes", "Acción", "Drama"],
     rating: 4.8,
-    stock: 50,
+    stock: 11,
     image: "/api/placeholder/300/400",
-    isNew: false,
+    isNew: true,
     isBestseller: true
   }
 ];
 
-const VideogamesPage = () => {
+const ComicsPage = () => {
   const [loading, setLoading] = useState(true);
-  const [videogames, setVideogames] = useState([]);
-  const [filteredGames, setFilteredGames] = useState([]);
+  const [comics, setComics] = useState([]);
+  const [filteredComics, setFilteredComics] = useState([]);
   const [filterVisible, setFilterVisible] = useState(true);
   const [filters, setFilters] = useState({
-    platforms: [],
+    platforms: [], // En cómics esto sería la editorial (Marvel, DC, etc.)
     categories: [],
-    priceRange: [0, 100],
+    priceRange: [0, 50],
     onlyDiscount: false,
     onlyInStock: false,
     rating: 0
@@ -154,45 +167,46 @@ const VideogamesPage = () => {
   // Cargar datos (simulando una llamada a API)
   useEffect(() => {
     setTimeout(() => {
-      setVideogames(MOCK_VIDEOGAMES);
-      setFilteredGames(MOCK_VIDEOGAMES);
+      setComics(MOCK_COMICS);
+      setFilteredComics(MOCK_COMICS);
       setLoading(false);
     }, 800);
   }, []);
 
   useEffect(() => {
-    if (videogames.length > 0) {
-      let result = [...videogames];
+    if (comics.length > 0) {
+      let result = [...comics];
       
       if (filters.platforms.length > 0) {
-        result = result.filter(game => 
-          game.platforms.some(platform => filters.platforms.includes(platform))
+        result = result.filter(comic => 
+          comic.platforms.some(platform => filters.platforms.includes(platform))
         );
       }
       
       if (filters.categories.length > 0) {
-        result = result.filter(game => 
-          game.categories.some(category => filters.categories.includes(category))
+        result = result.filter(comic => 
+          comic.categories.some(category => filters.categories.includes(category))
         );
       }
       
-      result = result.filter(game => {
-        const price = game.discountPrice || game.price;
+      result = result.filter(comic => {
+        const price = comic.discountPrice || comic.price;
         return price >= filters.priceRange[0] && price <= filters.priceRange[1];
       });
       
       if (filters.onlyDiscount) {
-        result = result.filter(game => game.discountPrice !== null);
+        result = result.filter(comic => comic.discountPrice !== null);
       }
       
       if (filters.onlyInStock) {
-        result = result.filter(game => game.stock > 0);
+        result = result.filter(comic => comic.stock > 0);
       }
       
       if (filters.rating > 0) {
-        result = result.filter(game => game.rating >= filters.rating);
+        result = result.filter(comic => comic.rating >= filters.rating);
       }
       
+      // Ordenar resultados
       if (sortBy === 'price-asc') {
         result.sort((a, b) => (a.discountPrice || a.price) - (b.discountPrice || b.price));
       } else if (sortBy === 'price-desc') {
@@ -203,10 +217,10 @@ const VideogamesPage = () => {
         result.sort((a, b) => (b.isBestseller === a.isBestseller ? 0 : b.isBestseller ? 1 : -1));
       }
       
-      setFilteredGames(result);
+      setFilteredComics(result);
       setCurrentPage(1);
     }
-  }, [videogames, filters, sortBy]);
+  }, [comics, filters, sortBy]);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({
@@ -217,7 +231,7 @@ const VideogamesPage = () => {
 
   const getCurrentPageData = () => {
     const startIndex = (currentPage - 1) * pageSize;
-    return filteredGames.slice(startIndex, startIndex + pageSize);
+    return filteredComics.slice(startIndex, startIndex + pageSize);
   };
 
   return (
@@ -226,7 +240,7 @@ const VideogamesPage = () => {
         items={[
           { title: <Link href="/"><HomeOutlined /></Link> },
           { title: <Link href="/products">Products</Link> },
-          { title: "Videogames" }
+          { title: "Comics" }
         ]} 
         className="mb-4"
       />
@@ -234,7 +248,7 @@ const VideogamesPage = () => {
       <Row gutter={[24, 24]}>
         <Col span={24}>
           <div className="flex justify-between items-center mb-6">
-            <Title level={2} className="mb-0">Videogames</Title>
+            <Title level={2} className="mb-0">Comics</Title>
             <div className="flex items-center">
               <Button 
                 icon={<FilterOutlined />} 
@@ -247,13 +261,13 @@ const VideogamesPage = () => {
                 defaultValue="popularity"
                 style={{ width: 180 }}
                 onChange={(value) => setSortBy(value)}
-                placeholder="Ordenar por"
+                placeholder="Sort by"
                 className="w-48"
               >
-                <Option value="popularity">More popular</Option>
-                <Option value="price-asc">Price: menor a mayor</Option>
-                <Option value="price-desc">Price: mayor a menor</Option>
-                <Option value="newest">News</Option>
+                <Option value="popularity">Most popular</Option>
+                <Option value="price-asc">Price: Low to High</Option>
+                <Option value="price-desc">Price: High to Low</Option>
+                <Option value="newest">Newest</Option>
               </Select>
             </div>
           </div>
@@ -265,9 +279,9 @@ const VideogamesPage = () => {
               <Title level={4}>Filter by</Title>
               
               <div className="mb-6">
-                <Text strong className="block mb-2">Platforms</Text>
+                <Text strong className="block mb-2">Publisher</Text>
                 <Checkbox.Group
-                  options={['PS5', 'PS4', 'Xbox Series X', 'Xbox One', 'Switch', 'PC']}
+                  options={['Marvel', 'DC Comics', 'Image Comics', 'Dark Horse', 'Vertigo', 'IDW', 'Boom! Studios']}
                   value={filters.platforms}
                   onChange={(values) => handleFilterChange('platforms', values)}
                   className="flex flex-col space-y-2"
@@ -275,9 +289,9 @@ const VideogamesPage = () => {
               </div>
               
               <div className="mb-6">
-                <Text strong className="block mb-2">Categories</Text>
+                <Text strong className="block mb-2">Genre</Text>
                 <Checkbox.Group
-                  options={['Action', 'Adventure', 'RPG', 'Stategy', 'Sports', 'Simulation', 'Open']}
+                  options={['Superheroes', 'Action', 'Adventure', 'Sci-Fi', 'Fantasy', 'Horror', 'Crime', 'Drama']}
                   value={filters.categories}
                   onChange={(values) => handleFilterChange('categories', values)}
                   className="flex flex-col space-y-2"
@@ -289,8 +303,8 @@ const VideogamesPage = () => {
                 <Slider
                   range
                   min={0}
-                  max={100}
-                  defaultValue={[0, 100]}
+                  max={50}
+                  defaultValue={[0, 50]}
                   onChange={(values) => handleFilterChange('priceRange', values)}
                   className="mb-2"
                 />
@@ -326,10 +340,10 @@ const VideogamesPage = () => {
                     style={{ width: '100%' }}
                   >
                     <Option value={0}>All</Option>
-                    <Option value={4.5}>4.5 stars</Option>
-                    <Option value={4}>4 stars</Option>
-                    <Option value={3.5}>3.5 stars</Option>
-                    <Option value={3}>3 stars</Option>
+                    <Option value={4.5}>4.5+ stars</Option>
+                    <Option value={4}>4+ stars</Option>
+                    <Option value={3.5}>3.5+ stars</Option>
+                    <Option value={3}>3+ stars</Option>
                   </Select>
                 </div>
               </div>
@@ -339,13 +353,13 @@ const VideogamesPage = () => {
                 onClick={() => setFilters({
                   platforms: [],
                   categories: [],
-                  priceRange: [0, 100],
+                  priceRange: [0, 50],
                   onlyDiscount: false,
                   onlyInStock: false,
                   rating: 0
                 })}
               >
-                Clean Filters
+                Clear Filters
               </Button>
             </Card>
           </Col>
@@ -356,13 +370,13 @@ const VideogamesPage = () => {
             <div className="flex justify-center items-center h-64">
               <Spin size="large" />
             </div>
-          ) : filteredGames.length === 0 ? (
-            <Empty description="No videogames found" />
+          ) : filteredComics.length === 0 ? (
+            <Empty description="No comics found" />
           ) : (
             <>
               <Row gutter={[16, 24]}>
-                {getCurrentPageData().map((game) => (
-                    <ProductCard key={game.id} product={game}/>
+                {getCurrentPageData().map((comic) => (
+                  <ProductCard key={comic.id} product={comic}/>
                 ))}
               </Row>
               
@@ -370,7 +384,7 @@ const VideogamesPage = () => {
                 <Pagination
                   current={currentPage}
                   pageSize={pageSize}
-                  total={filteredGames.length}
+                  total={filteredComics.length}
                   onChange={(page) => setCurrentPage(page)}
                   showSizeChanger={false}
                 />
@@ -383,4 +397,4 @@ const VideogamesPage = () => {
   );
 };
 
-export default VideogamesPage;
+export default ComicsPage;

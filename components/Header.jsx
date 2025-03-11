@@ -44,9 +44,9 @@ const Header = () => {
           label: <Link href="/products/comics">Cómics</Link>
         },
         {
-          key: 'manga',
+          key: 'mangas',
           icon: <BookOutlined />,
-          label: <Link href="/products/manga">Manga</Link>
+          label: <Link href="/products/mangas">Mangas</Link>
         },
         {
           key: 'merchandise',

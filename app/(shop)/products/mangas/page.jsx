@@ -14,14 +14,105 @@ const { Search } = Input;
 const { Option } = Select;
 
 // Datos de ejemplo - en un caso real vendrían de una API
-const MOCK_VIDEOGAMES = [
+const MOCK_MANGAS = [
   {
     id: 1,
-    title: "The Legend of Zelda: Breath of the Wild",
-    price: 59.99,
-    discountPrice: 49.99,
-    platforms: ["Switch"],
-    categories: ["Aventura", "Acción"],
+    title: "Attack on Titan Vol. 1",
+    price: 12.99,
+    discountPrice: 9.99,
+    platforms: ["Shonen"],
+    categories: ["Acción", "Fantasía", "Horror"],
+    rating: 4.8,
+    stock: 20,
+    image: "/api/placeholder/300/400",
+    isNew: false,
+    isBestseller: true
+  },
+  {
+    id: 2,
+    title: "My Hero Academia Vol. 5",
+    price: 11.99,
+    discountPrice: null,
+    platforms: ["Shonen"],
+    categories: ["Acción", "Superhéroes"],
+    rating: 4.7,
+    stock: 15,
+    image: "/api/placeholder/300/400",
+    isNew: true,
+    isBestseller: true
+  },
+  {
+    id: 3,
+    title: "Chainsaw Man Vol. 3",
+    price: 12.99,
+    discountPrice: 10.99,
+    platforms: ["Shonen"],
+    categories: ["Acción", "Horror", "Sobrenatural"],
+    rating: 4.9,
+    stock: 8,
+    image: "/api/placeholder/300/400",
+    isNew: true,
+    isBestseller: true
+  },
+  {
+    id: 4,
+    title: "Fruits Basket Vol. 2",
+    price: 13.99,
+    discountPrice: null,
+    platforms: ["Shojo"],
+    categories: ["Romance", "Drama", "Sobrenatural"],
+    rating: 4.6,
+    stock: 12,
+    image: "/api/placeholder/300/400",
+    isNew: false,
+    isBestseller: false
+  },
+  {
+    id: 5,
+    title: "Berserk Deluxe Edition Vol. 1",
+    price: 49.99,
+    discountPrice: 39.99,
+    platforms: ["Seinen"],
+    categories: ["Acción", "Fantasía", "Horror"],
+    rating: 4.9,
+    stock: 5,
+    image: "/api/placeholder/300/400",
+    isNew: false,
+    isBestseller: true
+  },
+  {
+    id: 6,
+    title: "One Piece Vol. 98",
+    price: 11.99,
+    discountPrice: null,
+    platforms: ["Shonen"],
+    categories: ["Aventura", "Acción", "Comedia"],
+    rating: 4.8,
+    stock: 25,
+    image: "/api/placeholder/300/400",
+    isNew: true,
+    isBestseller: true
+  },
+  {
+    id: 7,
+    title: "Sailor Moon Vol. 1",
+    price: 12.99,
+    discountPrice: 11.99,
+    platforms: ["Shojo"],
+    categories: ["Magical Girl", "Romance", "Aventura"],
+    rating: 4.7,
+    stock: 10,
+    image: "/api/placeholder/300/400",
+    isNew: false,
+    isBestseller: false
+  },
+  {
+    id: 8,
+    title: "Death Note Black Edition Vol. 1",
+    price: 14.99,
+    discountPrice: null,
+    platforms: ["Shonen"],
+    categories: ["Misterio", "Sobrenatural", "Thriller"],
     rating: 4.9,
     stock: 15,
     image: "/api/placeholder/300/400",
@@ -29,120 +120,29 @@ const MOCK_VIDEOGAMES = [
     isBestseller: true
   },
   {
-    id: 2,
-    title: "Elden Ring",
-    price: 69.99,
-    discountPrice: null,
-    platforms: ["PS5", "Xbox Series X", "PC"],
-    categories: ["RPG", "Acción"],
-    rating: 4.8,
-    stock: 8,
-    image: "/api/placeholder/300/400",
-    isNew: true,
-    isBestseller: true
-  },
-  {
-    id: 3,
-    title: "Cyberpunk 2077",
-    price: 59.99,
-    discountPrice: 29.99,
-    platforms: ["PS5", "Xbox Series X", "PC"],
-    categories: ["RPG", "Acción", "Mundo Abierto"],
-    rating: 4.1,
-    stock: 20,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: false
-  },
-  {
-    id: 4,
-    title: "Super Mario Odyssey",
-    price: 49.99,
-    discountPrice: null,
-    platforms: ["Switch"],
-    categories: ["Plataformas", "Aventura"],
-    rating: 4.7,
-    stock: 12,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
-  },
-  {
-    id: 5,
-    title: "Red Dead Redemption 2",
-    price: 59.99,
-    discountPrice: 39.99,
-    platforms: ["PS4", "Xbox One", "PC"],
-    categories: ["Acción", "Aventura", "Mundo Abierto"],
+    id: 9,
+    title: "Vagabond Vol. 1",
+    price: 19.99,
+    discountPrice: 17.99,
+    platforms: ["Seinen"],
+    categories: ["Histórico", "Artes Marciales", "Drama"],
     rating: 4.9,
     stock: 7,
     image: "/api/placeholder/300/400",
     isNew: false,
-    isBestseller: true
-  },
-  {
-    id: 6,
-    title: "Hogwarts Legacy",
-    price: 69.99,
-    discountPrice: 59.99,
-    platforms: ["PS5", "Xbox Series X", "PC"],
-    categories: ["RPG", "Aventura", "Mundo Abierto"],
-    rating: 4.5,
-    stock: 10,
-    image: "/api/placeholder/300/400",
-    isNew: true,
     isBestseller: false
-  },
-  {
-    id: 7,
-    title: "FIFA 24",
-    price: 69.99,
-    discountPrice: null,
-    platforms: ["PS5", "Xbox Series X", "PC", "Switch"],
-    categories: ["Deportes", "Simulación"],
-    rating: 4.3,
-    stock: 25,
-    image: "/api/placeholder/300/400",
-    isNew: true,
-    isBestseller: true
-  },
-  {
-    id: 8,
-    title: "Minecraft",
-    price: 29.99,
-    discountPrice: null,
-    platforms: ["PC", "Switch", "PS4", "Xbox One", "Mobile"],
-    categories: ["Sandbox", "Aventura"],
-    rating: 4.8,
-    stock: 50,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
-  },
-  {
-    id: 9,
-    title: "League of legends",
-    price: 29.99,
-    discountPrice: null,
-    platforms: ["PC", "Switch", "PS4", "Xbox One", "Mobile"],
-    categories: ["Sandbox", "Aventura"],
-    rating: 4.8,
-    stock: 50,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
   }
 ];
 
-const VideogamesPage = () => {
+const MangasPage = () => {
   const [loading, setLoading] = useState(true);
-  const [videogames, setVideogames] = useState([]);
-  const [filteredGames, setFilteredGames] = useState([]);
+  const [mangas, setMangas] = useState([]);
+  const [filteredMangas, setFilteredMangas] = useState([]);
   const [filterVisible, setFilterVisible] = useState(true);
   const [filters, setFilters] = useState({
-    platforms: [],
+    platforms: [], // En mangas esto sería el tipo (Shonen, Seinen, etc.)
     categories: [],
-    priceRange: [0, 100],
+    priceRange: [0, 50],
     onlyDiscount: false,
     onlyInStock: false,
     rating: 0
@@ -154,45 +154,46 @@ const VideogamesPage = () => {
   // Cargar datos (simulando una llamada a API)
   useEffect(() => {
     setTimeout(() => {
-      setVideogames(MOCK_VIDEOGAMES);
-      setFilteredGames(MOCK_VIDEOGAMES);
+      setMangas(MOCK_MANGAS);
+      setFilteredMangas(MOCK_MANGAS);
       setLoading(false);
     }, 800);
   }, []);
 
   useEffect(() => {
-    if (videogames.length > 0) {
-      let result = [...videogames];
+    if (mangas.length > 0) {
+      let result = [...mangas];
       
       if (filters.platforms.length > 0) {
-        result = result.filter(game => 
-          game.platforms.some(platform => filters.platforms.includes(platform))
+        result = result.filter(manga => 
+          manga.platforms.some(platform => filters.platforms.includes(platform))
         );
       }
       
       if (filters.categories.length > 0) {
-        result = result.filter(game => 
-          game.categories.some(category => filters.categories.includes(category))
+        result = result.filter(manga => 
+          manga.categories.some(category => filters.categories.includes(category))
         );
       }
       
-      result = result.filter(game => {
-        const price = game.discountPrice || game.price;
+      result = result.filter(manga => {
+        const price = manga.discountPrice || manga.price;
         return price >= filters.priceRange[0] && price <= filters.priceRange[1];
       });
       
       if (filters.onlyDiscount) {
-        result = result.filter(game => game.discountPrice !== null);
+        result = result.filter(manga => manga.discountPrice !== null);
       }
       
       if (filters.onlyInStock) {
-        result = result.filter(game => game.stock > 0);
+        result = result.filter(manga => manga.stock > 0);
       }
       
       if (filters.rating > 0) {
-        result = result.filter(game => game.rating >= filters.rating);
+        result = result.filter(manga => manga.rating >= filters.rating);
       }
       
+      // Ordenar resultados
       if (sortBy === 'price-asc') {
         result.sort((a, b) => (a.discountPrice || a.price) - (b.discountPrice || b.price));
       } else if (sortBy === 'price-desc') {
@@ -203,10 +204,10 @@ const VideogamesPage = () => {
         result.sort((a, b) => (b.isBestseller === a.isBestseller ? 0 : b.isBestseller ? 1 : -1));
       }
       
-      setFilteredGames(result);
+      setFilteredMangas(result);
       setCurrentPage(1);
     }
-  }, [videogames, filters, sortBy]);
+  }, [mangas, filters, sortBy]);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({
@@ -217,7 +218,7 @@ const VideogamesPage = () => {
 
   const getCurrentPageData = () => {
     const startIndex = (currentPage - 1) * pageSize;
-    return filteredGames.slice(startIndex, startIndex + pageSize);
+    return filteredMangas.slice(startIndex, startIndex + pageSize);
   };
 
   return (
@@ -226,7 +227,7 @@ const VideogamesPage = () => {
         items={[
           { title: <Link href="/"><HomeOutlined /></Link> },
           { title: <Link href="/products">Products</Link> },
-          { title: "Videogames" }
+          { title: "Manga" }
         ]} 
         className="mb-4"
       />
@@ -234,7 +235,7 @@ const VideogamesPage = () => {
       <Row gutter={[24, 24]}>
         <Col span={24}>
           <div className="flex justify-between items-center mb-6">
-            <Title level={2} className="mb-0">Videogames</Title>
+            <Title level={2} className="mb-0">Manga</Title>
             <div className="flex items-center">
               <Button 
                 icon={<FilterOutlined />} 
@@ -250,10 +251,10 @@ const VideogamesPage = () => {
                 placeholder="Ordenar por"
                 className="w-48"
               >
-                <Option value="popularity">More popular</Option>
-                <Option value="price-asc">Price: menor a mayor</Option>
-                <Option value="price-desc">Price: mayor a menor</Option>
-                <Option value="newest">News</Option>
+                <Option value="popularity">Most popular</Option>
+                <Option value="price-asc">Price: Low to High</Option>
+                <Option value="price-desc">Price: High to Low</Option>
+                <Option value="newest">Newest</Option>
               </Select>
             </div>
           </div>
@@ -265,9 +266,9 @@ const VideogamesPage = () => {
               <Title level={4}>Filter by</Title>
               
               <div className="mb-6">
-                <Text strong className="block mb-2">Platforms</Text>
+                <Text strong className="block mb-2">Type</Text>
                 <Checkbox.Group
-                  options={['PS5', 'PS4', 'Xbox Series X', 'Xbox One', 'Switch', 'PC']}
+                  options={['Shonen', 'Shojo', 'Seinen', 'Josei', 'Kodomo']}
                   value={filters.platforms}
                   onChange={(values) => handleFilterChange('platforms', values)}
                   className="flex flex-col space-y-2"
@@ -275,9 +276,9 @@ const VideogamesPage = () => {
               </div>
               
               <div className="mb-6">
-                <Text strong className="block mb-2">Categories</Text>
+                <Text strong className="block mb-2">Genre</Text>
                 <Checkbox.Group
-                  options={['Action', 'Adventure', 'RPG', 'Stategy', 'Sports', 'Simulation', 'Open']}
+                  options={['Action', 'Adventure', 'Romance', 'Fantasy', 'Horror', 'Supernatural', 'Drama', 'Comedy']}
                   value={filters.categories}
                   onChange={(values) => handleFilterChange('categories', values)}
                   className="flex flex-col space-y-2"
@@ -289,8 +290,8 @@ const VideogamesPage = () => {
                 <Slider
                   range
                   min={0}
-                  max={100}
-                  defaultValue={[0, 100]}
+                  max={50}
+                  defaultValue={[0, 50]}
                   onChange={(values) => handleFilterChange('priceRange', values)}
                   className="mb-2"
                 />
@@ -326,10 +327,10 @@ const VideogamesPage = () => {
                     style={{ width: '100%' }}
                   >
                     <Option value={0}>All</Option>
-                    <Option value={4.5}>4.5 stars</Option>
-                    <Option value={4}>4 stars</Option>
-                    <Option value={3.5}>3.5 stars</Option>
-                    <Option value={3}>3 stars</Option>
+                    <Option value={4.5}>4.5+ stars</Option>
+                    <Option value={4}>4+ stars</Option>
+                    <Option value={3.5}>3.5+ stars</Option>
+                    <Option value={3}>3+ stars</Option>
                   </Select>
                 </div>
               </div>
@@ -339,13 +340,13 @@ const VideogamesPage = () => {
                 onClick={() => setFilters({
                   platforms: [],
                   categories: [],
-                  priceRange: [0, 100],
+                  priceRange: [0, 50],
                   onlyDiscount: false,
                   onlyInStock: false,
                   rating: 0
                 })}
               >
-                Clean Filters
+                Clear Filters
               </Button>
             </Card>
           </Col>
@@ -356,13 +357,13 @@ const VideogamesPage = () => {
             <div className="flex justify-center items-center h-64">
               <Spin size="large" />
             </div>
-          ) : filteredGames.length === 0 ? (
-            <Empty description="No videogames found" />
+          ) : filteredMangas.length === 0 ? (
+            <Empty description="No manga found" />
           ) : (
             <>
               <Row gutter={[16, 24]}>
-                {getCurrentPageData().map((game) => (
-                    <ProductCard key={game.id} product={game}/>
+                {getCurrentPageData().map((manga) => (
+                  <ProductCard key={manga.id} product={manga}/>
                 ))}
               </Row>
               
@@ -370,7 +371,7 @@ const VideogamesPage = () => {
                 <Pagination
                   current={currentPage}
                   pageSize={pageSize}
-                  total={filteredGames.length}
+                  total={filteredMangas.length}
                   onChange={(page) => setCurrentPage(page)}
                   showSizeChanger={false}
                 />
@@ -383,4 +384,4 @@ const VideogamesPage = () => {
   );
 };
 
-export default VideogamesPage;
+export default MangasPage;

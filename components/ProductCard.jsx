@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, Typography, Tag} from 'antd';
+import {Card, Typography, Tag, Col} from 'antd';
 import Link from 'next/link';
 import Image from 'next/image';
 import { 
@@ -31,6 +31,7 @@ import {
 
 export const ProductCard = ({product}) => {
   return (
+                      <Col xs={24} sm={12} md={8} lg={6}>
   <Card
                       hoverable
                       className="h-full flex flex-col"
@@ -102,6 +103,6 @@ export const ProductCard = ({product}) => {
                             : 'No stock'}
                         </Text>
                       </div>
-                    </Card>
+                    </Card></Col>
   )
 }
