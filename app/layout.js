@@ -5,10 +5,8 @@ import Header from '@/components/Header';
 //import Footer from '@/components/layout/Footer';
 import './globals.css';
 
-// Opcional: configura tu fuente
 const inter = Inter({ subsets: ['latin'] });
 
-// Opcional: tema personalizado para Ant Design
 const theme = {
   token: {
     colorPrimary: '#5928E5',
@@ -27,7 +25,6 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
             <Header />
             <main className="flex-grow pt-24">
-              {/* pt-24 añade padding superior para compensar el header fijo */}
               {children}
             </main>
       </body>

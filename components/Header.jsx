@@ -9,12 +9,14 @@ import {
   ShoppingCartOutlined, 
   UserOutlined, 
   SearchOutlined, 
+  AppstoreAddOutlined,
   MenuOutlined,
   BookOutlined,
   HeartOutlined
 } from '@ant-design/icons';
 
 const { Search } = Input;
+
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -33,7 +35,7 @@ const Header = () => {
       items={[
         {
           key: 'videogames',
-          icon: <BookOutlined />,
+          icon: <AppstoreAddOutlined />,
           label: <Link href="/products/videogames">Videojuegos</Link>
         },
         {
@@ -181,7 +183,7 @@ const Header = () => {
           </Link>
           
           <Link href="/products/videogames" passHref>
-            <Button type="link" icon={<BookOutlined />} className="flex items-center justify-start">
+            <Button type="link" icon={<AppstoreAddOutlined />} className="flex items-center justify-start">
               Videojuegos
             </Button>
           </Link>
@@ -217,16 +219,10 @@ const Header = () => {
               </Button>
             </Link>
             
-            <Link href="/blog" passHref>
-              <Button type="link" className="flex items-center justify-start">
-                Blog
-              </Button>
-            </Link>
           </div>
         </div>
       </Drawer>
 
-      {/* Estilos CSS adicionales */}
       <style jsx global>{`
         .search-dark .ant-input,
         .search-dark .ant-input-group-addon {
