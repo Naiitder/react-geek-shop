@@ -67,6 +67,7 @@ const VideogamesPage = () => {
   };
 
   return (
+    <div style={{background: "white"}}>
     <div className="container mx-auto px-4 py-6" style={{background: "white"}}>
       <Breadcrumb 
         items={[
@@ -225,6 +226,7 @@ const VideogamesPage = () => {
           )}
         </Col>
       </Row>
+    </div>
     </div>
   );
 };
