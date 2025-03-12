@@ -9,7 +9,7 @@ import {
 import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
 import { filterHelper } from '@/lib/helpers/filterHelper';
-import { setupAntDesignRender } from '@/lib/utils/antd-renderer';
+import { setupAntDesignRender } from '@/lib/utils/antdRenderer';
 
 const { Title, Text } = Typography;
 const { Search } = Input;
