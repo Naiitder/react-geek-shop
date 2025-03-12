@@ -36,6 +36,7 @@ import {
   TruckOutlined,
   BarcodeOutlined,
 } from '@ant-design/icons';
+import Item from 'antd/es/list/Item';
 
 const { Title, Text, Paragraph } = Typography;
 const { TabPane } = Tabs;
@@ -163,15 +164,9 @@ const ProductDetailPage = () => {
   const [activeTab, setActiveTab] = useState("1");
   const [selectedImage, setSelectedImage] = useState(0);
 
-  // Simular carga de datos del producto
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        // Aquí harías una llamada a tu API con el ID del producto
-        // const res = await fetch(`/api/products/${params.id}`);
-        // const data = await res.json();
-        
-        // Simulamos la llamada con un timeout y datos de ejemplo
         setTimeout(() => {
           setProduct(PRODUCT_DATA);
           setLoading(false);
@@ -198,6 +193,12 @@ const ProductDetailPage = () => {
     // Aquí implementarías la lógica real de añadir a favoritos
   };
 
+
+  const handleShare = () => {
+    message.info("Función de compartir abierta");
+    // Aquí implementarías la funcionalidad de compartir
+  };
+
   // Si está cargando, mostrar spinner
   if (loading) {
     return (
@@ -220,7 +221,7 @@ const ProductDetailPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto px-4 py-6" style={{background: "white"}}>
       {/* Breadcrumbs */}
       <Breadcrumb 
         items={[
@@ -357,9 +358,18 @@ const ProductDetailPage = () => {
                 size="large" 
                 icon={<HeartOutlined />} 
                 onClick={handleAddToWishlist}
-                className="w-full sm:w-auto"
+                className="mr-2 w-full sm:w-auto"
               >
                 Favorito
+              </Button>
+
+              <Button 
+                size="large" 
+                icon={<ShareAltOutlined />} 
+                onClick={handleShare}
+                className="w-full sm:w-auto"
+              >
+                Compartir
               </Button>
             </div>
             
@@ -380,10 +390,141 @@ const ProductDetailPage = () => {
               </div>
             </div>
           </Card>
-          </Col>
-          </Row>
+          
+          {/* Detalles del juego */}
+          <Card className="mb-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <Text strong>Desarrollador:</Text>
+                <Text className="ml-2">{product.developer}</Text>
+              </div>
+              <div>
+                <Text strong>Distribuidor:</Text>
+                <Text className="ml-2">{product.publisher}</Text>
+              </div>
+              <div>
+                <Text strong>Fecha de lanzamiento:</Text>
+                <Text className="ml-2">{product.releaseDate}</Text>
+              </div>
+              <div>
+                <Text strong>Clasificación:</Text>
+                <Text className="ml-2">{product.ageRating}</Text>
+              </div>
+              <div>
+                <Text strong>Idiomas:</Text>
+                <Text className="ml-2">{product.languages.join(', ')}</Text>
+              </div>
+              <div>
+                <Text strong>Plataformas:</Text>
+                <Text className="ml-2">{product.platforms.join(', ')}</Text>
+              </div>
+            </div>
+          </Card>
+        </Col>
+      </Row>
+      
+      {/* Pestañas de información adicional */}
+      <div className="mt-8">
+        <Tabs 
+          defaultActiveKey="1" 
+          onChange={(key) => setActiveTab(key)}
+          className="product-tabs"
+          size="large"
+        >
+          <Item tab="Descripción" key="1">
+            <Card>
+              <div className="product-description" dangerouslySetInnerHTML={{ __html: product.description }} />
+            </Card>
+          </Item>
+          
+          <Item tab="Características" key="2">
+            <Card>
+              <List
+                dataSource={product.features}
+                renderItem={(item) => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<CheckCircleFilled style={{ color: '#52c41a' }} />}
+                      title={item}
+                    />
+                  </List.Item>
+                )}
+              />
+            </Card>
+          </Item>
+          
+          <Item tab="Especificaciones" key="3">
+            <Card>
+              <Descriptions
+                bordered
+                column={{ xxl: 3, xl: 3, lg: 3, md: 2, sm: 1, xs: 1 }}
+              >
+                <Descriptions.Item label="Género">{product.specifications.genre}</Descriptions.Item>
+                <Descriptions.Item label="Jugadores">{product.specifications.players}</Descriptions.Item>
+                <Descriptions.Item label="Idioma Texto">{product.specifications.textLanguage}</Descriptions.Item>
+                <Descriptions.Item label="Idioma Voces">{product.specifications.voiceLanguage}</Descriptions.Item>
+                <Descriptions.Item label="Tamaño del archivo">{product.specifications.fileSize}</Descriptions.Item>
+                <Descriptions.Item label="Controles compatibles">{product.specifications.supportedControllers}</Descriptions.Item>
+              </Descriptions>
+            </Card>
+          </Item>
+          
+          <Item tab={`Reseñas (${product.reviewCount})`} key="4">
+            <Card>
+              <div className="mb-6">
+                <div className="flex items-center mb-4">
+                  <StarFilled className="text-yellow-400 text-xl mr-2" />
+                  <Title level={4} className="mr-2 mb-0">
+                    {product.rating} de 5
+                  </Title>
+                  <Text type="secondary">
+                    ({product.reviewCount} reseñas)
+                  </Text>
+                </div>
+                <Rate disabled defaultValue={product.rating} allowHalf className="mb-4" />
+              </div>
+              
+              <Divider />
+              
+              <List
+                itemLayout="vertical"
+                dataSource={product.reviews}
+                renderItem={(review) => (
+                  <List.Item>
+                    <List.Item.Meta
+                      avatar={<Avatar>{review.userName.charAt(0)}</Avatar>}
+                      title={
+                        <div className="flex items-center">
+                          <Text strong className="mr-3">{review.userName}</Text>
+                          <Rate disabled defaultValue={review.rating} className="text-sm" />
+                        </div>
+                      }
+                      description={`Publicado el ${review.date}`}
+                    />
+                    <Text>{review.content}</Text>
+                  </List.Item>
+                )}
+              />
+              
+              <div className="text-center mt-6">
+                <Button type="primary">
+                  Escribir una reseña
+                </Button>
+              </div>
+            </Card>
+          </Item>
+        </Tabs>
+      </div>
+      
+      {/* Productos relacionados */}
+      <div className="mt-12">
+        <Title level={3} className="mb-6">
+          Productos relacionados
+        </Title>
+        
           </div>
-  );
-}
+          </div>
+        )
+};
 
 export default ProductDetailPage;
