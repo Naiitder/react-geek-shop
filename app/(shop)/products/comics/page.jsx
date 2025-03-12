@@ -10,131 +10,15 @@ import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
 import { filterHelper } from '@/lib/helpers/filterHelper';
 import { setupAntDesignRender } from '@/lib/utils/antdRenderer';
+import { MOCK_COMICS } from '@/lib/data/mockComics';
+import { comicCategory } from '@/lib/utils/categoryTypes';
 
 const { Title, Text } = Typography;
 const { Search } = Input;
 const { Option } = Select;
 
 // Datos de ejemplo - en un caso real vendrían de una API
-const MOCK_COMICS = [
-  {
-    id: 1,
-    title: "Batman: The Killing Joke",
-    price: 17.99,
-    discountPrice: 14.99,
-    platforms: ["DC Comics"],
-    categories: ["Superheroes", "Drama", "Crime"],
-    rating: 4.9,
-    stock: 12,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
-  },
-  {
-    id: 2,
-    title: "Watchmen",
-    price: 24.99,
-    discountPrice: null,
-    platforms: ["DC Comics"],
-    categories: ["Superheroes", "Drama", "Mistery"],
-    rating: 4.8,
-    stock: 8,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
-  },
-  {
-    id: 3,
-    title: "The Amazing Spider-Man #1",
-    price: 29.99,
-    discountPrice: 25.99,
-    platforms: ["Marvel"],
-    categories: ["Superheroes", "Action", "Adventure"],
-    rating: 4.7,
-    stock: 5,
-    image: "/api/placeholder/300/400",
-    isNew: true,
-    isBestseller: false
-  },
-  {
-    id: 4,
-    title: "Saga Vol. 1",
-    price: 14.99,
-    discountPrice: null,
-    platforms: ["Image Comics"],
-    categories: ["Sci-Fi", "Fantasy", "Drama"],
-    rating: 4.9,
-    stock: 15,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
-  },
-  {
-    id: 5,
-    title: "Sandman Vol. 1: Preludes & Nocturnes",
-    price: 19.99,
-    discountPrice: 16.99,
-    platforms: ["DC Comics", "Vertigo"],
-    categories: ["Fantasy", "Horror", "Mitology"],
-    rating: 4.8,
-    stock: 10,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
-  },
-  {
-    id: 6,
-    title: "Maus",
-    price: 18.99,
-    discountPrice: null,
-    platforms: ["Pantheon Books"],
-    categories: ["Historic", "Biografía", "War"],
-    rating: 4.9,
-    stock: 7,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: false
-  },
-  {
-    id: 7,
-    title: "X-Men: Dark Phoenix Saga",
-    price: 21.99,
-    discountPrice: 17.99,
-    platforms: ["Marvel"],
-    categories: ["Superheroes", "Sci-Fi", "Drama"],
-    rating: 4.7,
-    stock: 9,
-    image: "/api/placeholder/300/400",
-    isNew: true,
-    isBestseller: false
-  },
-  {
-    id: 8,
-    title: "Sin City",
-    price: 19.99,
-    discountPrice: null,
-    platforms: ["Dark Horse"],
-    categories: ["Noir", "Crime", "Thriller"],
-    rating: 4.6,
-    stock: 6,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: false
-  },
-  {
-    id: 9,
-    title: "Invincible Vol. 1",
-    price: 16.99,
-    discountPrice: 14.99,
-    platforms: ["Image Comics"],
-    categories: ["Superheroes", "Action", "Drama"],
-    rating: 4.8,
-    stock: 11,
-    image: "/api/placeholder/300/400",
-    isNew: true,
-    isBestseller: true
-  }
-];
+
 
 const ComicsPage = () => {
   const [loading, setLoading] = useState(true);
@@ -236,7 +120,7 @@ const ComicsPage = () => {
               <div className="mb-6">
                 <Text strong className="block mb-2">Genre</Text>
                 <Checkbox.Group
-                  options={['Superheroes', 'Action', 'Adventure', 'Sci-Fi', 'Fantasy', 'Horror', 'Crime', 'Drama']}
+                  options={Object.values(comicCategory)}
                   value={filters.categories}
                   onChange={(values) => handleFilterChange('categories', values)}
                   className="flex flex-col space-y-2"
