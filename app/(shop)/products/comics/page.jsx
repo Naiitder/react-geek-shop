@@ -8,23 +8,12 @@ import {
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
+import { filterHelper } from '@/lib/helpers/filterHelper';
+import { setupAntDesignRender } from '@/lib/utils/antd-renderer';
 
 const { Title, Text } = Typography;
 const { Search } = Input;
 const { Option } = Select;
-
-import { unstableSetRender } from 'antd';
-import { createRoot } from 'react-dom/client';
-
-unstableSetRender((node, container) => {
-  container._reactRoot ||= createRoot(container);
-  const root = container._reactRoot;
-  root.render(node);
-  return async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    root.unmount();
-  };
-});
 
 // Datos de ejemplo - en un caso real vendrían de una API
 const MOCK_COMICS = [
@@ -34,7 +23,7 @@ const MOCK_COMICS = [
     price: 17.99,
     discountPrice: 14.99,
     platforms: ["DC Comics"],
-    categories: ["Superheroes", "Drama", "Crimen"],
+    categories: ["Superheroes", "Drama", "Crime"],
     rating: 4.9,
     stock: 12,
     image: "/api/placeholder/300/400",
@@ -47,7 +36,7 @@ const MOCK_COMICS = [
     price: 24.99,
     discountPrice: null,
     platforms: ["DC Comics"],
-    categories: ["Superheroes", "Drama", "Misterio"],
+    categories: ["Superheroes", "Drama", "Mistery"],
     rating: 4.8,
     stock: 8,
     image: "/api/placeholder/300/400",
@@ -86,7 +75,7 @@ const MOCK_COMICS = [
     price: 19.99,
     discountPrice: 16.99,
     platforms: ["DC Comics", "Vertigo"],
-    categories: ["Fantasy", "Horror", "Mitología"],
+    categories: ["Fantasy", "Horror", "Mitology"],
     rating: 4.8,
     stock: 10,
     image: "/api/placeholder/300/400",
@@ -99,7 +88,7 @@ const MOCK_COMICS = [
     price: 18.99,
     discountPrice: null,
     platforms: ["Pantheon Books"],
-    categories: ["Histórico", "Biografía", "Guerra"],
+    categories: ["Historic", "Biografía", "War"],
     rating: 4.9,
     stock: 7,
     image: "/api/placeholder/300/400",
@@ -112,7 +101,7 @@ const MOCK_COMICS = [
     price: 21.99,
     discountPrice: 17.99,
     platforms: ["Marvel"],
-    categories: ["Superhéroes", "Ciencia Ficción", "Drama"],
+    categories: ["Superheroes", "Sci-Fi", "Drama"],
     rating: 4.7,
     stock: 9,
     image: "/api/placeholder/300/400",
@@ -125,7 +114,7 @@ const MOCK_COMICS = [
     price: 19.99,
     discountPrice: null,
     platforms: ["Dark Horse"],
-    categories: ["Noir", "Crimen", "Thriller"],
+    categories: ["Noir", "Crime", "Thriller"],
     rating: 4.6,
     stock: 6,
     image: "/api/placeholder/300/400",
@@ -138,7 +127,7 @@ const MOCK_COMICS = [
     price: 16.99,
     discountPrice: 14.99,
     platforms: ["Image Comics"],
-    categories: ["Superhéroes", "Acción", "Drama"],
+    categories: ["Superheroes", "Action", "Drama"],
     rating: 4.8,
     stock: 11,
     image: "/api/placeholder/300/400",
@@ -153,7 +142,7 @@ const ComicsPage = () => {
   const [filteredComics, setFilteredComics] = useState([]);
   const [filterVisible, setFilterVisible] = useState(true);
   const [filters, setFilters] = useState({
-    platforms: [], // En cómics esto sería la editorial (Marvel, DC, etc.)
+    platforms: [], 
     categories: [],
     priceRange: [0, 50],
     onlyDiscount: false,
@@ -164,8 +153,9 @@ const ComicsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
 
-  // Cargar datos (simulando una llamada a API)
   useEffect(() => {
+    setupAntDesignRender();
+
     setTimeout(() => {
       setComics(MOCK_COMICS);
       setFilteredComics(MOCK_COMICS);
@@ -174,52 +164,7 @@ const ComicsPage = () => {
   }, []);
 
   useEffect(() => {
-    if (comics.length > 0) {
-      let result = [...comics];
-      
-      if (filters.platforms.length > 0) {
-        result = result.filter(comic => 
-          comic.platforms.some(platform => filters.platforms.includes(platform))
-        );
-      }
-      
-      if (filters.categories.length > 0) {
-        result = result.filter(comic => 
-          comic.categories.some(category => filters.categories.includes(category))
-        );
-      }
-      
-      result = result.filter(comic => {
-        const price = comic.discountPrice || comic.price;
-        return price >= filters.priceRange[0] && price <= filters.priceRange[1];
-      });
-      
-      if (filters.onlyDiscount) {
-        result = result.filter(comic => comic.discountPrice !== null);
-      }
-      
-      if (filters.onlyInStock) {
-        result = result.filter(comic => comic.stock > 0);
-      }
-      
-      if (filters.rating > 0) {
-        result = result.filter(comic => comic.rating >= filters.rating);
-      }
-      
-      // Ordenar resultados
-      if (sortBy === 'price-asc') {
-        result.sort((a, b) => (a.discountPrice || a.price) - (b.discountPrice || b.price));
-      } else if (sortBy === 'price-desc') {
-        result.sort((a, b) => (b.discountPrice || b.price) - (a.discountPrice || a.price));
-      } else if (sortBy === 'newest') {
-        result.sort((a, b) => (b.isNew === a.isNew ? 0 : b.isNew ? 1 : -1));
-      } else { 
-        result.sort((a, b) => (b.isBestseller === a.isBestseller ? 0 : b.isBestseller ? 1 : -1));
-      }
-      
-      setFilteredComics(result);
-      setCurrentPage(1);
-    }
+    filterHelper({products: comics, filters, sortBy, setFilteredProducts: setFilteredComics, setCurrentPage});
   }, [comics, filters, sortBy]);
 
   const handleFilterChange = (key, value) => {

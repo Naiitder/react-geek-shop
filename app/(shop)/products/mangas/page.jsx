@@ -8,6 +8,8 @@ import {
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
+import { filterHelper } from '@/lib/helpers/filterHelper';
+import { setupAntDesignRender } from '@/lib/utils/antd-renderer';
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -140,7 +142,7 @@ const MangasPage = () => {
   const [filteredMangas, setFilteredMangas] = useState([]);
   const [filterVisible, setFilterVisible] = useState(true);
   const [filters, setFilters] = useState({
-    platforms: [], // En mangas esto sería el tipo (Shonen, Seinen, etc.)
+    platforms: [], 
     categories: [],
     priceRange: [0, 50],
     onlyDiscount: false,
@@ -151,8 +153,9 @@ const MangasPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
 
-  // Cargar datos (simulando una llamada a API)
   useEffect(() => {
+    setupAntDesignRender();
+
     setTimeout(() => {
       setMangas(MOCK_MANGAS);
       setFilteredMangas(MOCK_MANGAS);
@@ -161,52 +164,12 @@ const MangasPage = () => {
   }, []);
 
   useEffect(() => {
-    if (mangas.length > 0) {
-      let result = [...mangas];
-      
-      if (filters.platforms.length > 0) {
-        result = result.filter(manga => 
-          manga.platforms.some(platform => filters.platforms.includes(platform))
-        );
-      }
-      
-      if (filters.categories.length > 0) {
-        result = result.filter(manga => 
-          manga.categories.some(category => filters.categories.includes(category))
-        );
-      }
-      
-      result = result.filter(manga => {
-        const price = manga.discountPrice || manga.price;
-        return price >= filters.priceRange[0] && price <= filters.priceRange[1];
-      });
-      
-      if (filters.onlyDiscount) {
-        result = result.filter(manga => manga.discountPrice !== null);
-      }
-      
-      if (filters.onlyInStock) {
-        result = result.filter(manga => manga.stock > 0);
-      }
-      
-      if (filters.rating > 0) {
-        result = result.filter(manga => manga.rating >= filters.rating);
-      }
-      
-      // Ordenar resultados
-      if (sortBy === 'price-asc') {
-        result.sort((a, b) => (a.discountPrice || a.price) - (b.discountPrice || b.price));
-      } else if (sortBy === 'price-desc') {
-        result.sort((a, b) => (b.discountPrice || b.price) - (a.discountPrice || a.price));
-      } else if (sortBy === 'newest') {
-        result.sort((a, b) => (b.isNew === a.isNew ? 0 : b.isNew ? 1 : -1));
-      } else { 
-        result.sort((a, b) => (b.isBestseller === a.isBestseller ? 0 : b.isBestseller ? 1 : -1));
-      }
-      
-      setFilteredMangas(result);
-      setCurrentPage(1);
-    }
+    filterHelper({
+      products: mangas,
+      filters, sortBy,
+      setFilteredProducts: setFilteredMangas,
+      setCurrentPage
+    });
   }, [mangas, filters, sortBy]);
 
   const handleFilterChange = (key, value) => {

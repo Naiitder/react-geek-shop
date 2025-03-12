@@ -8,6 +8,8 @@ import {
 } from '@ant-design/icons';
 import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
+import { filterHelper } from '@/lib/helpers/filterHelper';
+import { setupAntDesignRender } from '@/lib/utils/antd-renderer';
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -21,7 +23,7 @@ const MOCK_VIDEOGAMES = [
     price: 59.99,
     discountPrice: 49.99,
     platforms: ["Switch"],
-    categories: ["Aventura", "Acción"],
+    categories: ["Adventure", "Action"],
     rating: 4.9,
     stock: 15,
     image: "/api/placeholder/300/400",
@@ -34,7 +36,7 @@ const MOCK_VIDEOGAMES = [
     price: 69.99,
     discountPrice: null,
     platforms: ["PS5", "Xbox Series X", "PC"],
-    categories: ["RPG", "Acción"],
+    categories: ["RPG", "Action", "Open World"],
     rating: 4.8,
     stock: 8,
     image: "/api/placeholder/300/400",
@@ -47,7 +49,7 @@ const MOCK_VIDEOGAMES = [
     price: 59.99,
     discountPrice: 29.99,
     platforms: ["PS5", "Xbox Series X", "PC"],
-    categories: ["RPG", "Acción", "Mundo Abierto"],
+    categories: ["RPG", "Action", "Open World"],
     rating: 4.1,
     stock: 20,
     image: "/api/placeholder/300/400",
@@ -60,7 +62,7 @@ const MOCK_VIDEOGAMES = [
     price: 49.99,
     discountPrice: null,
     platforms: ["Switch"],
-    categories: ["Plataformas", "Aventura"],
+    categories: ["Platformer", "Adventure"],
     rating: 4.7,
     stock: 12,
     image: "/api/placeholder/300/400",
@@ -73,7 +75,7 @@ const MOCK_VIDEOGAMES = [
     price: 59.99,
     discountPrice: 39.99,
     platforms: ["PS4", "Xbox One", "PC"],
-    categories: ["Acción", "Aventura", "Mundo Abierto"],
+    categories: ["Action", "Adventure", "Open World"],
     rating: 4.9,
     stock: 7,
     image: "/api/placeholder/300/400",
@@ -86,7 +88,7 @@ const MOCK_VIDEOGAMES = [
     price: 69.99,
     discountPrice: 59.99,
     platforms: ["PS5", "Xbox Series X", "PC"],
-    categories: ["RPG", "Aventura", "Mundo Abierto"],
+    categories: ["RPG", "Adventure", "Open World"],
     rating: 4.5,
     stock: 10,
     image: "/api/placeholder/300/400",
@@ -112,7 +114,7 @@ const MOCK_VIDEOGAMES = [
     price: 29.99,
     discountPrice: null,
     platforms: ["PC", "Switch", "PS4", "Xbox One", "Mobile"],
-    categories: ["Sandbox", "Aventura"],
+    categories: ["Sandbox", "Adventure"],
     rating: 4.8,
     stock: 50,
     image: "/api/placeholder/300/400",
@@ -153,6 +155,8 @@ const VideogamesPage = () => {
 
   // Cargar datos (simulando una llamada a API)
   useEffect(() => {
+    setupAntDesignRender();
+
     setTimeout(() => {
       setVideogames(MOCK_VIDEOGAMES);
       setFilteredGames(MOCK_VIDEOGAMES);
@@ -161,51 +165,12 @@ const VideogamesPage = () => {
   }, []);
 
   useEffect(() => {
-    if (videogames.length > 0) {
-      let result = [...videogames];
-      
-      if (filters.platforms.length > 0) {
-        result = result.filter(game => 
-          game.platforms.some(platform => filters.platforms.includes(platform))
-        );
-      }
-      
-      if (filters.categories.length > 0) {
-        result = result.filter(game => 
-          game.categories.some(category => filters.categories.includes(category))
-        );
-      }
-      
-      result = result.filter(game => {
-        const price = game.discountPrice || game.price;
-        return price >= filters.priceRange[0] && price <= filters.priceRange[1];
-      });
-      
-      if (filters.onlyDiscount) {
-        result = result.filter(game => game.discountPrice !== null);
-      }
-      
-      if (filters.onlyInStock) {
-        result = result.filter(game => game.stock > 0);
-      }
-      
-      if (filters.rating > 0) {
-        result = result.filter(game => game.rating >= filters.rating);
-      }
-      
-      if (sortBy === 'price-asc') {
-        result.sort((a, b) => (a.discountPrice || a.price) - (b.discountPrice || b.price));
-      } else if (sortBy === 'price-desc') {
-        result.sort((a, b) => (b.discountPrice || b.price) - (a.discountPrice || a.price));
-      } else if (sortBy === 'newest') {
-        result.sort((a, b) => (b.isNew === a.isNew ? 0 : b.isNew ? 1 : -1));
-      } else { 
-        result.sort((a, b) => (b.isBestseller === a.isBestseller ? 0 : b.isBestseller ? 1 : -1));
-      }
-      
-      setFilteredGames(result);
-      setCurrentPage(1);
-    }
+    filterHelper({
+      products: videogames,
+      filters, sortBy,
+      setFilteredProducts: setFilteredGames,
+      setCurrentPage
+    });
   }, [videogames, filters, sortBy]);
 
   const handleFilterChange = (key, value) => {

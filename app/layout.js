@@ -1,4 +1,3 @@
-
 import { Inter } from 'next/font/google';
 import { ConfigProvider } from 'antd';
 import Header from '@/components/Header';
@@ -15,7 +14,7 @@ const theme = {
 };
 
 export const metadata = {
-  title: 'GameComics - Tu tienda de videojuegos y cómics',
+  title: 'GeekShop',
   description: 'Encuentra los mejores videojuegos, cómics, manga y merchandising.',
 };
 
