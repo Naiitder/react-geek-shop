@@ -10,131 +10,15 @@ import Link from 'next/link';
 import { ProductCard } from '@/components/ProductCard';
 import { filterHelper } from '@/lib/helpers/filterHelper';
 import { setupAntDesignRender } from '@/lib/utils/antdRenderer';
+import { mangaCategory } from '@/lib/utils/categoryTypes';
+import { MOCK_MANGAS } from '@/lib/data/mockMangas';
 
 const { Title, Text } = Typography;
 const { Search } = Input;
 const { Option } = Select;
 
 // Datos de ejemplo - en un caso real vendrían de una API
-const MOCK_MANGAS = [
-  {
-    id: 1,
-    title: "Attack on Titan Vol. 1",
-    price: 12.99,
-    discountPrice: 9.99,
-    platforms: ["Shonen"],
-    categories: ["Acción", "Fantasía", "Horror"],
-    rating: 4.8,
-    stock: 20,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
-  },
-  {
-    id: 2,
-    title: "My Hero Academia Vol. 5",
-    price: 11.99,
-    discountPrice: null,
-    platforms: ["Shonen"],
-    categories: ["Acción", "Superhéroes"],
-    rating: 4.7,
-    stock: 15,
-    image: "/api/placeholder/300/400",
-    isNew: true,
-    isBestseller: true
-  },
-  {
-    id: 3,
-    title: "Chainsaw Man Vol. 3",
-    price: 12.99,
-    discountPrice: 10.99,
-    platforms: ["Shonen"],
-    categories: ["Acción", "Horror", "Sobrenatural"],
-    rating: 4.9,
-    stock: 8,
-    image: "/api/placeholder/300/400",
-    isNew: true,
-    isBestseller: true
-  },
-  {
-    id: 4,
-    title: "Fruits Basket Vol. 2",
-    price: 13.99,
-    discountPrice: null,
-    platforms: ["Shojo"],
-    categories: ["Romance", "Drama", "Sobrenatural"],
-    rating: 4.6,
-    stock: 12,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: false
-  },
-  {
-    id: 5,
-    title: "Berserk Deluxe Edition Vol. 1",
-    price: 49.99,
-    discountPrice: 39.99,
-    platforms: ["Seinen"],
-    categories: ["Acción", "Fantasía", "Horror"],
-    rating: 4.9,
-    stock: 5,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
-  },
-  {
-    id: 6,
-    title: "One Piece Vol. 98",
-    price: 11.99,
-    discountPrice: null,
-    platforms: ["Shonen"],
-    categories: ["Aventura", "Acción", "Comedia"],
-    rating: 4.8,
-    stock: 25,
-    image: "/api/placeholder/300/400",
-    isNew: true,
-    isBestseller: true
-  },
-  {
-    id: 7,
-    title: "Sailor Moon Vol. 1",
-    price: 12.99,
-    discountPrice: 11.99,
-    platforms: ["Shojo"],
-    categories: ["Magical Girl", "Romance", "Aventura"],
-    rating: 4.7,
-    stock: 10,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: false
-  },
-  {
-    id: 8,
-    title: "Death Note Black Edition Vol. 1",
-    price: 14.99,
-    discountPrice: null,
-    platforms: ["Shonen"],
-    categories: ["Misterio", "Sobrenatural", "Thriller"],
-    rating: 4.9,
-    stock: 15,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: true
-  },
-  {
-    id: 9,
-    title: "Vagabond Vol. 1",
-    price: 19.99,
-    discountPrice: 17.99,
-    platforms: ["Seinen"],
-    categories: ["Histórico", "Artes Marciales", "Drama"],
-    rating: 4.9,
-    stock: 7,
-    image: "/api/placeholder/300/400",
-    isNew: false,
-    isBestseller: false
-  }
-];
+
 
 const MangasPage = () => {
   const [loading, setLoading] = useState(true);
@@ -241,7 +125,7 @@ const MangasPage = () => {
               <div className="mb-6">
                 <Text strong className="block mb-2">Genre</Text>
                 <Checkbox.Group
-                  options={['Action', 'Adventure', 'Romance', 'Fantasy', 'Horror', 'Supernatural', 'Drama', 'Comedy']}
+                  options={Object.values(mangaCategory)}
                   value={filters.categories}
                   onChange={(values) => handleFilterChange('categories', values)}
                   className="flex flex-col space-y-2"

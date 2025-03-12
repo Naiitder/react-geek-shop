@@ -52,8 +52,10 @@ export const ProductCard = ({product}) => {
           <div className="relative pt-[100%]">
             <Image
               src={product.image}
-              alt={product.title}
-              fill
+              alt={product.title} 
+              layout="fill"
+              objectFit="cover"  
+              objectPosition="top" 
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover"
               priority={product.id <= 4}
